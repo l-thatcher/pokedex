@@ -137,3 +137,7 @@ export interface PokemonData {
   types: TypeSlot[];
   weight: number;
 }
+
+export interface PokemonArray {
+  results: PokemonData[];
+}

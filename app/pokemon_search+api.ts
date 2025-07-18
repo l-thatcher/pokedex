@@ -1,11 +1,8 @@
 export async function GET(request: Request) {
-  try {
-    // Get the Pokemon name from the query parameters
-    const url = new URL(request.url);
-    const pokemonName = url.searchParams.get('name');
-    
+  console.log("Fetching Pokemon data...");
+  try {    
     // Fetch data from the PokeAPI using the Pokemon name
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`); //?limit=100000
     
     // Check if the response is ok
     if (!response.ok) {

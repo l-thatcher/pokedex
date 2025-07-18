@@ -3,30 +3,33 @@ import SearchBar from "@/components/SearchBar";
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-
-async function fetchPokemon(pokemonName: string) {
-  const response = await fetch(`/pokemon_search?name=${pokemonName}`);
-  const data = await response.json();
-  return data;
-}
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { fetchAllPokemon } from "./slices/pokemonAPISlice";
 
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
-  const [pokemonData, setPokemonData] = useState<PokemonData | null>(null);
+  const [pokemonData, setPokemonData] = useState<PokemonData[] | null>(null);
+
+  const pokemon = useAppSelector((state) => state.pokemon.all);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      if (pokemonName.trim()) {
-        const data = await fetchPokemon(pokemonName);
+    dispatch(fetchAllPokemon());
+  }, [dispatch]);
 
-        console.log(JSON.stringify(data)); // Log the data for debugging purposes
-        if (data) {
-          setPokemonData(data);
-        }
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (pokemonName.trim()) {
+        const filtered = pokemon.results.filter((p) =>
+          p.name.toLowerCase().includes(pokemonName.toLowerCase())
+        );
+        setPokemonData(filtered);
+      } else {
+        setPokemonData(null);
       }
     }, 500);
     return () => clearTimeout(timeoutId);
-  }, [pokemonName]);
+  }, [pokemonName, pokemon]);
 
   return (
     <View className="flex-1 mt-5">
@@ -41,8 +44,9 @@ export default function App() {
           <ResultsList results={pokemonData} />
         </>
       ) : (
-        <Text className="text-white mt-5">No Pokemon data found</Text>
+        <Text>No Pokemon data found</Text>
       )}
+      <Text>POKEMON: {pokemon.results.map((p) => p.name).join("\n ")}</Text>
     </View>
   );
 }
