@@ -1,10 +1,8 @@
-import ResultsList from "@/components/ResultsList";
+import ResultsTile from "@/components/ResultsTile";
 import SearchBar from "@/components/SearchBar";
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
-import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { selectFavourites } from "./slices/favouritesSlice";
 import { fetchAllPokemon } from "./slices/pokemonAPISlice";
@@ -36,45 +34,27 @@ export default function App() {
   }, [pokemonName, pokemon]);
 
   return (
-    <SafeAreaProvider>
-      <View className="flex-1 bg-blue">
-        <SearchBar
-          placeholder="Search for a pokemon"
-          value={pokemonName}
-          onChangeText={(text: string) => setPokemonName(text)}
-        />
+    <View className="flex-1 pt-20 px-6 rounded-md bg-[#131313]">
+      <SearchBar
+        placeholder="Search for a pokemon"
+        value={pokemonName}
+        onChangeText={(text: string) => setPokemonName(text)}
+      />
 
-        {pokemonData ? (
-          <ResultsList results={pokemonData} />
-        ) : (
-          <Text>No Pokemon data found</Text>
-        )}
-
-        <Text>POKEMON:</Text>
+      {pokemonData ? (
         <FlatList
-          data={pokemon.results}
+          className="w-full mt-2"
+          data={pokemonData}
           keyExtractor={(item) => item.name}
-          renderItem={({ item }) => (
-            <Link
-              key={item.name}
-              href={{
-                pathname: "/pokemonDetails/[name]",
-                params: { name: item.name },
-              }}
-            >
-              <Text>{item.name}</Text>
-            </Link>
-          )}
-          style={{ maxHeight: 200 }} // adjust or remove as needed
+          renderItem={({ item }) => <ResultsTile name={item.name} />}
         />
-
-        <Text>Favourites:</Text>
-        <FlatList
-          data={favourites}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => <Text>{item}</Text>}
-        />
-      </View>
-    </SafeAreaProvider>
+      ) : (
+        <View className="flex-1 justify-center items-center">
+          <Text className="text-white w-3/4 text-center">
+            No Pokemon data to show, use the search bar to look one up!
+          </Text>
+        </View>
+      )}
+    </View>
   );
 }
