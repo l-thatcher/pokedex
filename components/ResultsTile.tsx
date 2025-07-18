@@ -21,7 +21,7 @@ const ResultsTile = ({ name }: ResultsTileProps) => {
 
   return pokemonDetails ? (
     <Link href={`/pokemonDetails/${name}`} asChild>
-      <TouchableOpacity className="w-full bg-secondary rounded-xl py-2 px-2 my-4 shadow-md shadow-primary flex-row items-center">
+      <TouchableOpacity className="w-full bg-secondary rounded-xl py-2 px-2 my-1 shadow-md shadow-primary flex-row items-center">
         <Image
           source={{ uri: pokemonDetails.sprites.front_default }}
           alt={`${pokemonDetails.name} sprite`}

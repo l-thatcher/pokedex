@@ -1,50 +1,57 @@
-# Welcome to your Expo app 👋
+# Pokedex
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, mobile-friendly Pokedex app built with Expo, React Native, and TypeScript. Browse, search, and favorite Pokémon.
 
-## Get started
+## Features
 
-1. Install dependencies
+- 🔍 **Search Pokémon** by name
+- ⭐ **Favorite Pokémon** and view your favorites list
+- 📊 **Detailed Pokémon stats** including species, height, weight, and base stats
+- 🎨 **Modern UI** with Tailwind CSS (via NativeWind)
+- 🗂️ **Persistent favorites** using Redux state management
 
-   ```bash
+## Tech Stack
+
+- [Expo](https://expo.dev/) (React Native)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [NativeWind](https://www.nativewind.dev/) (Tailwind CSS for React Native)
+- [PokéAPI](https://pokeapi.co/) for Pokémon data
+
+## Getting Started
+
+1. **Install dependencies:**
+
+   ```sh
    npm install
    ```
 
-2. Start the app
+2. **Start the Expo development server:**
 
-   ```bash
+   ```sh
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. **Run on your device:**
+   - Use the Expo Go app (iOS/Android) or an emulator.
+   - It has been tested for iphone.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `app/` — Main app code (screens, navigation, store, API calls)
+- `components/` — Reusable UI components
+- `interfaces/` — TypeScript interfaces for Pokémon data
+- `assets/` — Fonts and images
 
-## Get a fresh project
+## Customization
 
-When you're ready, run:
+- **Tailwind config:** Edit `tailwind.config.js`
+- **Fonts:** Add to `assets/fonts/` and update config as needed
 
-```bash
-npm run reset-project
-```
+## Contributing
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Pull requests and issues are welcome!
 
-## Learn more
+## License
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+MIT

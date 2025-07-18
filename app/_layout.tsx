@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
-import { Image, StatusBar, StyleSheet, View } from "react-native";
+import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import "./global.css";
 import { useAppDispatch } from "./hooks";
@@ -36,17 +36,38 @@ function FavouritesLoader({ children }: { children: React.ReactNode }) {
 }
 
 export default function RootLayout() {
+  const isWeb = Platform.OS === "web";
+  const content = (
+    <>
+      <StatusBar hidden />
+      <View className="pl-[30px] pr-[27px] pt-[50px] pb-[30px] flex-1">
+        <Stack screenOptions={{ headerShown: false }} />
+      </View>
+      <Image
+        source={require("../assets/images/border.png")}
+        style={styles.border}
+      />
+    </>
+  );
   return (
     <Provider store={store}>
       <FavouritesLoader>
-        <StatusBar hidden />
-        <View className="pl-[30px] pr-[27px] pt-[50px] pb-[30px] flex-1">
-          <Stack screenOptions={{ headerShown: false }} />
-        </View>
-        <Image
-          source={require("../assets/images/border.png")}
-          style={styles.border}
-        />
+        {isWeb ? (
+          <View className="web-portrait-wrapper">
+            <View
+              style={{
+                aspectRatio: 0.462,
+                flex: 1,
+                justifyContent: "center",
+                alignSelf: "center",
+              }}
+            >
+              {content}
+            </View>
+          </View>
+        ) : (
+          content
+        )}
       </FavouritesLoader>
     </Provider>
   );

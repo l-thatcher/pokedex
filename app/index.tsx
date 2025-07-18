@@ -1,3 +1,4 @@
+import FavouriteTile from "@/components/FavouriteTile";
 import ResultsTile from "@/components/ResultsTile";
 import SearchBar from "@/components/SearchBar";
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
@@ -58,12 +59,33 @@ export default function App() {
           renderItem={({ item }) => <ResultsTile name={item.name} />}
         />
       ) : (
-        <View className="flex-1 justify-center items-center">
-          <Text className="text-white w-3/4 text-center">
-            No Pokemon data to show, use the search bar to look one up!
+        <View className="flex-1 items-center mt-4">
+          <Text className="text-white text-lg font-semibold mb-2">
+            or, explore random Pokémon
           </Text>
+          <FlatList
+            className="w-full"
+            data={getRandomPokemon(pokemon.results, 6)}
+            keyExtractor={(item, idx) => item.name + idx}
+            renderItem={({ item }) => (
+              <View style={{ flex: 1, minHeight: 140, margin: 2 }}>
+                <FavouriteTile name={item.name} />
+              </View>
+            )}
+            numColumns={2}
+            columnWrapperStyle={{ gap: 8 }}
+            removeClippedSubviews={false}
+            initialNumToRender={6}
+            windowSize={5}
+          />
         </View>
       )}
     </View>
   );
+}
+
+function getRandomPokemon(list: { name: string }[], n: number) {
+  if (!Array.isArray(list) || list.length === 0) return [];
+  const shuffled = [...list].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
 }
