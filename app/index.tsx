@@ -3,7 +3,8 @@ import SearchBar from "@/components/SearchBar";
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { selectFavourites } from "./slices/favouritesSlice";
 import { fetchAllPokemon } from "./slices/pokemonAPISlice";
@@ -35,36 +36,45 @@ export default function App() {
   }, [pokemonName, pokemon]);
 
   return (
-    <View className="flex-1 mt-5">
-      <SearchBar
-        placeholder="Search for a pokemon"
-        value={pokemonName}
-        onChangeText={(text: string) => setPokemonName(text)}
-      />
+    <SafeAreaProvider>
+      <View className="flex-1 bg-blue">
+        <SearchBar
+          placeholder="Search for a pokemon"
+          value={pokemonName}
+          onChangeText={(text: string) => setPokemonName(text)}
+        />
 
-      {pokemonData ? (
-        <>
+        {pokemonData ? (
           <ResultsList results={pokemonData} />
-        </>
-      ) : (
-        <Text>No Pokemon data found</Text>
-      )}
-      <Text>POKEMON:</Text>
-      {pokemon.results.map((p) => (
-        <Link
-          key={p.name}
-          href={{
-            pathname: "/pokemonDetails/[name]",
-            params: { name: p.name },
-          }}
-        >
-          <Text>{p.name}</Text>
-        </Link>
-      ))}
-      <Text>Favourites:</Text>
-      {favourites.map((favourite) => (
-        <Text key={favourite}>{favourite}</Text>
-      ))}
-    </View>
+        ) : (
+          <Text>No Pokemon data found</Text>
+        )}
+
+        <Text>POKEMON:</Text>
+        <FlatList
+          data={pokemon.results}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <Link
+              key={item.name}
+              href={{
+                pathname: "/pokemonDetails/[name]",
+                params: { name: item.name },
+              }}
+            >
+              <Text>{item.name}</Text>
+            </Link>
+          )}
+          style={{ maxHeight: 200 }} // adjust or remove as needed
+        />
+
+        <Text>Favourites:</Text>
+        <FlatList
+          data={favourites}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => <Text>{item}</Text>}
+        />
+      </View>
+    </SafeAreaProvider>
   );
 }

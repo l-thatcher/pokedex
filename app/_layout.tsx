@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
+import "./global.css";
 import { useAppDispatch } from "./hooks";
 import { setFavourites } from "./slices/favouritesSlice";
 import { store } from "./store";
