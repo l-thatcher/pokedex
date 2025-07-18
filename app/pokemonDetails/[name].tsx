@@ -1,7 +1,7 @@
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { fetchPokemonDetailsAPI } from "../api/pokemonDetailsAPI";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { selectFavourites, toggleFavourite } from "../slices/favouritesSlice";
@@ -13,6 +13,9 @@ export default function DetailsScreen() {
   );
   const dispatch = useAppDispatch();
   const favourites = useAppSelector(selectFavourites);
+  const isFavourite = pokemonDetails
+    ? favourites.includes(pokemonDetails.name)
+    : false;
 
   useEffect(() => {
     if (name) {
@@ -28,14 +31,27 @@ export default function DetailsScreen() {
           <Text>Name: {pokemonDetails.name}</Text>
           <Text>Height: {pokemonDetails.height}</Text>
           <Text>Weight: {pokemonDetails.weight}</Text>
-          <Text>Base Experience: {pokemonDetails.base_experience}</Text>
-          <Text>Abilities:</Text>
-          {pokemonDetails.abilities.map((ability) => (
-            <Text key={ability.ability.name}>{ability.ability.name}</Text>
-          ))}
+          <Text>Species: {pokemonDetails.species.name}</Text>
+          <Text>
+            Base Stats:{" "}
+            {pokemonDetails.stats.map((stat) => (
+              <Text key={stat.stat.name}>
+                {stat.stat.name}: {stat.base_stat}
+              </Text>
+            ))}
+          </Text>
+          <Image
+            source={{ uri: pokemonDetails.sprites.front_default }}
+            alt={`${pokemonDetails.name} sprite`}
+            style={{ width: 100, height: 100 }}
+          />
+          <Text>Number of games: {pokemonDetails.game_indices.length}</Text>
 
-          <Text onPress={() => dispatch(toggleFavourite(pokemonDetails.name))}>
-            Add to favourites
+          <Text
+            onPress={() => dispatch(toggleFavourite(pokemonDetails.name))}
+            style={{ color: isFavourite ? "green" : "red" }}
+          >
+            favourite
           </Text>
 
           <Text>Favourites:</Text>
