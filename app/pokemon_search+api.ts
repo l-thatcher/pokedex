@@ -2,7 +2,7 @@ export async function GET(request: Request) {
   try {
     // Get the Pokemon name from the query parameters
     const url = new URL(request.url);
-    const pokemonName = url.searchParams.get('name') || 'pikachu'; // Default to 'pikachu' if no name provided
+    const pokemonName = url.searchParams.get('name');
     
     // Fetch data from the PokeAPI using the Pokemon name
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     
     // Parse the JSON response and return it
     const data = await response.json();
-    console.log(data); // Log the data for debugging purposes
+    // console.log(data); // Log the data for debugging purposes
     return Response.json(data);
 
     //error handling
