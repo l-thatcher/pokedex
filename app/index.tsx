@@ -5,6 +5,7 @@ import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "./hooks";
+import { selectFavourites } from "./slices/favouritesSlice";
 import { fetchAllPokemon } from "./slices/pokemonAPISlice";
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
   const [pokemonData, setPokemonData] = useState<PokemonData[] | null>(null);
 
   const pokemon = useAppSelector((state) => state.pokemon.all);
+  const favourites = useAppSelector(selectFavourites);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -58,6 +60,10 @@ export default function App() {
         >
           <Text>{p.name}</Text>
         </Link>
+      ))}
+      <Text>Favourites:</Text>
+      {favourites.map((favourite) => (
+        <Text key={favourite}>{favourite}</Text>
       ))}
     </View>
   );

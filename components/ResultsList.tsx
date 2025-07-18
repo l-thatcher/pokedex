@@ -1,4 +1,5 @@
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
+import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 type ResultsListProps = {
@@ -10,7 +11,15 @@ const resultsList = ({ results }: ResultsListProps) => {
     <View>
       {results.map((pokemon) => (
         <View key={pokemon.name}>
-          <Text>{pokemon.name}</Text>
+          <Link
+            key={pokemon.name}
+            href={{
+              pathname: "/pokemonDetails/[name]",
+              params: { name: pokemon.name },
+            }}
+          >
+            <Text>{pokemon.name}</Text>
+          </Link>
         </View>
       ))}
     </View>
