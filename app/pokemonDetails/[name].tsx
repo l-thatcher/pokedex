@@ -34,7 +34,17 @@ export default function DetailsScreen() {
         ← Back
       </Text>
       {pokemonDetails ? (
-        <View className="w-full bg-secondary rounded-xl py-4 px-6 shadow-md shadow-primary">
+        <View className="w-full bg-secondary rounded-xl py-4 px-6 shadow-md shadow-primary relative">
+          {/* Star icon in top right */}
+          <Text
+            onPress={() => dispatch(toggleFavourite(pokemonDetails.name))}
+            className={`absolute right-4 top-4 text-3xl ${
+              isFavourite ? "text-yellow-400" : "text-white"
+            }`}
+            style={{ zIndex: 10 }}
+          >
+            {isFavourite ? "★" : "☆"}
+          </Text>
           <View className="flex-row items-center mb-4">
             <Image
               source={{ uri: pokemonDetails.sprites.front_default }}
@@ -77,15 +87,6 @@ export default function DetailsScreen() {
             <Text className="font-semibold">
               {pokemonDetails.game_indices.length}
             </Text>
-          </Text>
-          <Text
-            onPress={() => dispatch(toggleFavourite(pokemonDetails.name))}
-            className={`text-lg font-bold mb-2 ${
-              isFavourite ? "text-green-400" : "text-red-400"
-            }`}
-            style={{ textDecorationLine: "underline" }}
-          >
-            {isFavourite ? "Remove from Favourites" : "Add to Favourites"}
           </Text>
           <View className="mt-2">
             <Text className="text-base text-white font-bold mb-1">

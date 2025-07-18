@@ -1,8 +1,9 @@
 import ResultsTile from "@/components/ResultsTile";
 import SearchBar from "@/components/SearchBar";
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
+import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { selectFavourites } from "./slices/favouritesSlice";
 import { fetchAllPokemon } from "./slices/pokemonAPISlice";
@@ -35,6 +36,14 @@ export default function App() {
 
   return (
     <View className="flex-1 pt-20 px-6 rounded-md bg-[#131313]">
+      <View className="flex-row justify-between items-center mb-2">
+        <Text className="text-white text-2xl font-bold">Pokédex</Text>
+        <Link href="/favourites" asChild>
+          <TouchableOpacity className="bg-secondary px-4 py-2 rounded-md">
+            <Text className="text-white font-semibold">Favourites</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
       <SearchBar
         placeholder="Search for a pokemon"
         value={pokemonName}
