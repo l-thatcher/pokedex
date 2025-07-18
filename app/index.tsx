@@ -1,6 +1,7 @@
 import ResultsList from "@/components/ResultsList";
 import SearchBar from "@/components/SearchBar";
 import { PokemonData } from "@/interfaces/pokemon_interfaces";
+import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "./hooks";
@@ -46,7 +47,18 @@ export default function App() {
       ) : (
         <Text>No Pokemon data found</Text>
       )}
-      <Text>POKEMON: {pokemon.results.map((p) => p.name).join("\n ")}</Text>
+      <Text>POKEMON:</Text>
+      {pokemon.results.map((p) => (
+        <Link
+          key={p.name}
+          href={{
+            pathname: "/pokemonDetails/[name]",
+            params: { name: p.name },
+          }}
+        >
+          <Text>{p.name}</Text>
+        </Link>
+      ))}
     </View>
   );
 }

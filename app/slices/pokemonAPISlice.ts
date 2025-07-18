@@ -1,5 +1,6 @@
 import { PokemonArray } from '@/interfaces/pokemon_interfaces';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { fetchAllPokemonAPI } from '../api/allPokemonAPI';
 import type { RootState } from '../store';
 
 interface PokemonState {
@@ -17,8 +18,7 @@ const initialState: PokemonState = {
 export const fetchAllPokemon = createAsyncThunk<PokemonArray>(
   'pokemon/fetchAll',
   async () => {
-    const response = await fetch(`/pokemon_search`);
-    return (await response.json()) as PokemonArray;
+    return fetchAllPokemonAPI();
   }
 );
 
