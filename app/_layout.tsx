@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import "./global.css";
 import { useAppDispatch } from "./hooks";
 import { setFavourites } from "./slices/favouritesSlice";
+import { fetchAllPokemon } from "./slices/pokemonAPISlice";
 import { store } from "./store";
 
 const styles = StyleSheet.create({
@@ -30,6 +31,7 @@ function FavouritesLoader({ children }: { children: React.ReactNode }) {
         dispatch(setFavourites(JSON.parse(data)));
       }
     });
+    dispatch(fetchAllPokemon());
   }, [dispatch]);
 
   return <>{children}</>;
@@ -40,7 +42,7 @@ export default function RootLayout() {
   const content = (
     <>
       <StatusBar hidden />
-      <View className="pl-[30px] pr-[27px] pt-[50px] pb-[30px] flex-1">
+      <View className="pl-[30px] pr-[27px] pt-[45px] pb-[30px] flex-1">
         <Stack screenOptions={{ headerShown: false }} />
       </View>
       <Image

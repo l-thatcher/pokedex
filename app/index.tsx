@@ -5,21 +5,15 @@ import { PokemonData } from "@/interfaces/pokemon_interfaces";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import { useAppDispatch, useAppSelector } from "./hooks";
-import { selectFavourites } from "./slices/favouritesSlice";
-import { fetchAllPokemon } from "./slices/pokemonAPISlice";
+import { useAppSelector } from "./hooks";
+import { selectRecents } from "./slices/recentsSlice";
 
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
   const [pokemonData, setPokemonData] = useState<PokemonData[] | null>(null);
 
   const pokemon = useAppSelector((state) => state.pokemon.all);
-  const favourites = useAppSelector(selectFavourites);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchAllPokemon());
-  }, [dispatch]);
+  const recents = useAppSelector(selectRecents);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -61,31 +55,18 @@ export default function App() {
       ) : (
         <View className="flex-1 items-center mt-4">
           <Text className="text-white text-lg font-semibold mb-2">
-            or, explore random Pokémon
+            Recently Viewed Pokémon
           </Text>
           <FlatList
-            className="w-full"
-            data={getRandomPokemon(pokemon.results, 6)}
-            keyExtractor={(item, idx) => item.name + idx}
-            renderItem={({ item }) => (
-              <View style={{ flex: 1, minHeight: 140, margin: 2 }}>
-                <FavouriteTile name={item.name} />
-              </View>
-            )}
+            data={recents}
+            keyExtractor={(item) => item}
             numColumns={2}
-            columnWrapperStyle={{ gap: 8 }}
-            removeClippedSubviews={false}
-            initialNumToRender={6}
-            windowSize={5}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            renderItem={({ item }) => <FavouriteTile name={item} />}
+            className="w-full"
           />
         </View>
       )}
     </View>
   );
-}
-
-function getRandomPokemon(list: { name: string }[], n: number) {
-  if (!Array.isArray(list) || list.length === 0) return [];
-  const shuffled = [...list].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, n);
 }

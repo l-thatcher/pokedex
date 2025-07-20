@@ -5,6 +5,7 @@ import { Image, Text, View } from "react-native";
 import { fetchPokemonDetailsAPI } from "../api/pokemonDetailsAPI";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { selectFavourites, toggleFavourite } from "../slices/favouritesSlice";
+import { addRecent } from "../slices/recentsSlice";
 
 export default function DetailsScreen() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function DetailsScreen() {
   useEffect(() => {
     if (name) {
       fetchPokemonDetailsAPI(name as string).then(setPokemonDetails);
+      dispatch(addRecent(name as string));
     }
   }, [name]);
 
