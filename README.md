@@ -35,7 +35,7 @@ A modern, mobile-friendly Pokedex app built with Expo, React Native, and TypeScr
 
 3. **Run on your device:**
    - Use the Expo Go app (iOS/Android) or an emulator.
-   - It has been tested for iphone.
+   - It has been tested for iphone 16.
 
 ## Project Structure
 
@@ -44,7 +44,7 @@ A modern, mobile-friendly Pokedex app built with Expo, React Native, and TypeScr
 - `interfaces/` — TypeScript interfaces for Pokémon data
 - `assets/` — Fonts and images
 
-## Customization
+## Customisation
 
 - **Tailwind config:** Edit `tailwind.config.js`
 - **Fonts:** Add to `assets/fonts/` and update config as needed
