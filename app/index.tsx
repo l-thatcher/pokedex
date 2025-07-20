@@ -5,13 +5,14 @@ import { PokemonData } from "@/interfaces/pokemon_interfaces";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import { useAppSelector } from "./hooks";
-import { selectRecents } from "./slices/recentsSlice";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { clearRecents, selectRecents } from "./slices/recentsSlice";
 
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
   const [pokemonData, setPokemonData] = useState<PokemonData[] | null>(null);
 
+  const dispatch = useAppDispatch();
   const pokemon = useAppSelector((state) => state.pokemon.all);
   const recents = useAppSelector(selectRecents);
 
@@ -54,17 +55,31 @@ export default function App() {
         />
       ) : (
         <View className="flex-1 items-center mt-4">
-          <Text className="text-white text-lg font-semibold mb-2">
-            Recently Viewed Pokémon
-          </Text>
-          <FlatList
-            data={recents}
-            keyExtractor={(item) => item}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: "space-between" }}
-            renderItem={({ item }) => <FavouriteTile name={item} />}
-            className="w-full"
-          />
+          <View className="w-full flex-row justify-between">
+            <Text className="text-white text-lg font-semibold mb-2">
+              Recently Viewed Pokémon:
+            </Text>
+            <Text
+              className="text-white text-sm font-semibold mb-2"
+              onPress={() => dispatch(clearRecents())}
+            >
+              Clear
+            </Text>
+          </View>
+          {recents.length === 0 ? (
+            <View className="w-full h-full items-center justify-center">
+              <Text className="text-white">No recently viewed Pokémon</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={recents}
+              keyExtractor={(item) => item}
+              numColumns={2}
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              renderItem={({ item }) => <FavouriteTile name={item} />}
+              className="w-full"
+            />
+          )}
         </View>
       )}
     </View>
