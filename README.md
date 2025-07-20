@@ -8,7 +8,8 @@ A modern, mobile-friendly Pokedex app built with Expo, React Native, and TypeScr
 - ⭐ **Favorite Pokémon** and view your favorites list
 - 📊 **Detailed Pokémon stats** including species, height, weight, and base stats
 - 🎨 **Modern UI** with Tailwind CSS (via NativeWind)
-- 🗂️ **Persistent favorites** using Redux state management
+- 🗂️ **Persistent favorites and recents** using Redux state management, and local storage with AsyncStorage
+- 🗂️ **Expo router page navigation** navigation between pages is handled using Expo routing
 
 ## Tech Stack
 

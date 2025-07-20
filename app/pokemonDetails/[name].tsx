@@ -142,7 +142,7 @@ export default function DetailsScreen() {
               )}
             </View>
 
-            <View className="bg-[#232323] rounded-xl p-4 mt-2">
+            <View className="bg-[#232323] rounded-xl p-4 mb-8 mt-2">
               <Text className="text-lg text-white font-mono font-bold mb-2">
                 Favourites:
               </Text>

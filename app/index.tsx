@@ -47,12 +47,16 @@ export default function App() {
       />
 
       {pokemonData ? (
-        <FlatList
-          className="w-full mt-2"
-          data={pokemonData}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => <ResultsTile name={item.name} />}
-        />
+        pokemonData.length > 0 ? (
+          <FlatList
+            data={pokemonData}
+            keyExtractor={(item) => item.name}
+            renderItem={({ item }) => <ResultsTile name={item.name} />}
+            className="mt-4"
+          />
+        ) : (
+          <Text className="text-white mt-4">No Pokémon found</Text>
+        )
       ) : (
         <View className="flex-1 items-center mt-4">
           <View className="w-full flex-row justify-between">
