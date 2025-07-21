@@ -52,7 +52,3 @@ A modern, mobile-friendly Pokedex app built with Expo, React Native, and TypeScr
 ## Contributing
 
 Pull requests and issues are welcome!
-
-## License
-
-MIT
