@@ -52,3 +52,9 @@ A modern, mobile-friendly Pokedex app built with Expo, React Native, and TypeScr
 ## Contributing
 
 Pull requests and issues are welcome!
+
+## Todo/future plans
+
+- recents to be capped at x, or given a time limit
+- comment code
+- cache images to reduce API lookups
