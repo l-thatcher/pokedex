@@ -1,52 +1,83 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  addFavourite,
+  getFavourites,
+  removeFavourite,
+} from "../api/favouritesAPI";
+
+interface Favourite {
+  id: number;
+  user_id: number;
+  pokemon_name: string;
+  created_at: string;
+  updated_at: string;
+}
 
 interface FavouritesState {
-  favourites: string[];
+  items: Favourite[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: FavouritesState = {
-  favourites: [],
+  items: [],
+  loading: false,
+  error: null,
 };
 
-const FAVOURITES_KEY = "favourites";
+export const fetchFavourites = createAsyncThunk(
+  "favourites/fetchFavourites",
+  async () => {
+    const response = await getFavourites();
+    return response.favorites;
+  }
+);
 
-const saveFavourites = async (favourites: string[]) => {
-  await AsyncStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
-};
+export const addFavouriteAsync = createAsyncThunk(
+  "favourites/addFavourite",
+  async (name: string) => {
+    const newFavourite = await addFavourite(name);
+    return newFavourite;
+  }
+);
+
+export const removeFavouriteAsync = createAsyncThunk(
+  "favourites/removeFavourite",
+  async (name: string) => {
+    await removeFavourite(name);
+    return name;
+  }
+);
 
 const favouritesSlice = createSlice({
-  name: 'favourites',
+  name: "favourites",
   initialState,
-  reducers: {
-    setFavourites: (state, action: PayloadAction<string[]>) => {
-      state.favourites = action.payload;
-    },
-    addFavourite: (state, action: PayloadAction<string>) => {
-      if (!state.favourites.includes(action.payload)) {
-        state.favourites.push(action.payload);
-        saveFavourites(state.favourites);
-      }
-    },
-    removeFavourite: (state, action: PayloadAction<string>) => {
-      state.favourites = state.favourites.filter(name => name !== action.payload);
-      saveFavourites(state.favourites);
-    },
-    clearFavourites: (state) => {
-      state.favourites = [];
-      saveFavourites(state.favourites);
-    },
-    toggleFavourite: (state, action: PayloadAction<string>) => {
-      if (state.favourites.includes(action.payload)) {
-        state.favourites = state.favourites.filter(name => name !== action.payload);
-      } else {
-        state.favourites.push(action.payload);
-      }
-      saveFavourites(state.favourites);
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchFavourites.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchFavourites.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchFavourites.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch favourites";
+      })
+      .addCase(addFavouriteAsync.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(removeFavouriteAsync.fulfilled, (state, action) => {
+        state.items = state.items.filter(
+          (fav) => fav.pokemon_name !== action.payload
+        );
+      });
   },
 });
 
-export const { setFavourites, addFavourite, removeFavourite, clearFavourites, toggleFavourite } = favouritesSlice.actions;
-export const selectFavourites = (state: { favourites: FavouritesState }) => state.favourites.favourites;
 export default favouritesSlice.reducer;
+export const selectFavourites = (state: { favourites: FavouritesState }) =>
+  state.favourites.items;

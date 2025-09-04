@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { fetchPokemonDetailsAPI } from "../api/pokemonDetailsAPI";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { selectFavourites, toggleFavourite } from "../slices/favouritesSlice";
+import {
+  addFavouriteAsync,
+  removeFavouriteAsync,
+  selectFavourites,
+} from "../slices/favouritesSlice";
 import { addRecent } from "../slices/recentsSlice";
 
 export default function DetailsScreen() {
@@ -14,18 +18,33 @@ export default function DetailsScreen() {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonData | null>(
     null
   );
+
   const dispatch = useAppDispatch();
   const favourites = useAppSelector(selectFavourites);
+
+  // Check if current Pokémon is a favourite
   const isFavourite = pokemonDetails
-    ? favourites.includes(pokemonDetails.name)
+    ? favourites.some((fav) => fav.pokemon_name === pokemonDetails.name)
     : false;
+
+  // Toggle favourite by name
+  const handleToggleFavourite = (name: string) => {
+    const favObj = favourites.find((fav) => fav.pokemon_name === name);
+    if (favObj) {
+      console.log("Removing favourite:", name);
+      dispatch(removeFavouriteAsync(name));
+    } else {
+      console.log("Adding favourite:", name);
+      dispatch(addFavouriteAsync(name));
+    }
+  };
 
   useEffect(() => {
     if (name) {
       fetchPokemonDetailsAPI(name as string).then(setPokemonDetails);
       dispatch(addRecent(name as string));
     }
-  }, [name]);
+  }, [name, dispatch]);
 
   return (
     <View className="flex-1 pt-20 px-6 rounded-md bg-[#131313]">
@@ -55,7 +74,7 @@ export default function DetailsScreen() {
                 className="flex-1"
               />
               <Text
-                onPress={() => dispatch(toggleFavourite(pokemonDetails.name))}
+                onPress={() => handleToggleFavourite(pokemonDetails.name)}
                 className={`absolute right-4 top-4 text-4xl font-mono ${
                   isFavourite ? "text-yellow-400" : "text-white"
                 } z-20`}
@@ -152,11 +171,11 @@ export default function DetailsScreen() {
                 ) : (
                   favourites.map((favourite) => (
                     <Link
-                      key={favourite}
-                      href={`/pokemonDetails/${favourite}`}
+                      key={favourite.id}
+                      href={`/pokemonDetails/${favourite.pokemon_name}`}
                       className="text-white font-mono mr-2 mb-2 px-3 py-1 bg-[#232323] rounded text-base"
                     >
-                      {favourite}
+                      {favourite.pokemon_name}
                     </Link>
                   ))
                 )}

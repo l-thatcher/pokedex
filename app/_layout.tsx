@@ -1,11 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import "./global.css";
 import { useAppDispatch } from "./hooks";
-import { setFavourites } from "./slices/favouritesSlice";
+// import { setFavourites } from "./slices/favouritesSlice";
+import { login } from "./api/authAPI";
 import { fetchAllPokemon } from "./slices/pokemonAPISlice";
 import { store } from "./store";
 
@@ -26,12 +26,13 @@ function FavouritesLoader({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    AsyncStorage.getItem("favourites").then((data) => {
-      if (data) {
-        dispatch(setFavourites(JSON.parse(data)));
-      }
-    });
+    // AsyncStorage.getItem("favourites").then((data) => {
+    //   if (data) {
+    //     dispatch(setFavourites(JSON.parse(data)));
+    //   }
+    // });
     dispatch(fetchAllPokemon());
+    login("louis@email.com", "password");
   }, [dispatch]);
 
   return <>{children}</>;
