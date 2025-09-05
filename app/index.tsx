@@ -34,11 +34,18 @@ export default function App() {
     <View className="flex-1 pt-20 px-6 rounded-md bg-[#131313]">
       <View className="flex-row justify-between items-center mb-2">
         <Text className="text-white text-2xl font-bold">Pokédex</Text>
-        <Link href="/favourites" asChild>
-          <TouchableOpacity className="bg-secondary px-4 py-2 rounded-md">
-            <Text className="text-white font-semibold">Favourites</Text>
-          </TouchableOpacity>
-        </Link>
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Link href="/favourites" asChild>
+            <TouchableOpacity className="bg-secondary px-4 py-2 rounded-md">
+              <Text className="text-white font-semibold">Favourites</Text>
+            </TouchableOpacity>
+          </Link>
+          <Link href="/login" asChild>
+            <TouchableOpacity className="bg-secondary px-4 py-2 rounded-md">
+              <Text className="text-white font-semibold">Login</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
       </View>
       <SearchBar
         placeholder="Search for a pokemon"

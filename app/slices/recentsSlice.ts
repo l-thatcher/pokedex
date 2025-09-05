@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RecentsState {
   recents: string[];
@@ -16,7 +16,7 @@ const saveRecents = async (recents: string[]) => {
 };
 
 const recentsSlice = createSlice({
-  name: 'recents',
+  name: "recents",
   initialState,
   reducers: {
     setRecents: (state, action: PayloadAction<string[]>) => {
@@ -29,17 +29,18 @@ const recentsSlice = createSlice({
       }
     },
     removeRecent: (state, action: PayloadAction<string>) => {
-      state.recents = state.recents.filter(name => name !== action.payload);
+      state.recents = state.recents.filter((name) => name !== action.payload);
       saveRecents(state.recents);
     },
     clearRecents: (state) => {
       state.recents = [];
       saveRecents(state.recents);
     },
-    
   },
 });
 
-export const { setRecents, addRecent, removeRecent, clearRecents } = recentsSlice.actions;
-export const selectRecents = (state: { recents: RecentsState }) => state.recents.recents;
+export const { setRecents, addRecent, removeRecent, clearRecents } =
+  recentsSlice.actions;
+export const selectRecents = (state: { recents: RecentsState }) =>
+  state.recents.recents;
 export default recentsSlice.reducer;
